@@ -35,7 +35,7 @@ export default function ChatDemoPage() {
   const [mode, setMode] = React.useState<'chat' | 'image'>('chat');
 
   // Handle sending a message
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -46,15 +46,77 @@ export default function ChatDemoPage() {
     };
     setMessages(prev => [...prev, newMessage]);
 
-    // Add mock assistant response
-    setTimeout(() => {
-      const response: Message = {
-        id: (Date.now() + 1).toString(),
-        content: 'This is a mock response. Backend integration will be added later.',
-        role: 'assistant',
-      };
-      setMessages(prev => [...prev, response]);
-    }, 1000);
+    try {
+      if (mode === 'chat') {
+        // Call chat-stream endpoint
+        const response = await fetch('http://127.0.0.1:54321/functions/v1/chat-stream', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+          },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: inputValue }]
+          })
+        });
+
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+        let content = '';
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+            
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = JSON.parse(line.slice(6));
+                content += data.content || '';
+                
+                // Update message in real-time
+                setMessages(prev => {
+                  const lastMessage = prev[prev.length - 1];
+                  if (lastMessage.role === 'assistant') {
+                    return [...prev.slice(0, -1), { ...lastMessage, content }];
+                  } else {
+                    return [...prev, { id: Date.now().toString(), content, role: 'assistant' }];
+                  }
+                });
+              }
+            }
+          }
+        }
+      } else {
+        // Call image-generate endpoint
+        const response = await fetch('http://127.0.0.1:54321/functions/v1/image-generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
+          },
+          body: JSON.stringify({ prompt: inputValue })
+        });
+
+        const data = await response.json();
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          content: `![Generated Image](${data.url})`,
+          role: 'assistant'
+        }]);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        content: 'Sorry, there was an error processing your request.',
+        role: 'assistant'
+      }]);
+    }
 
     // Clear input
     setInputValue('');
