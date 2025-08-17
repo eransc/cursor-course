@@ -1,153 +1,142 @@
-"use client";
-import React from "react";
+import Link from "next/link";
+import { MessageCircle, Image, Zap, ArrowRight } from "lucide-react";
 
-// Message type definition
-type Message = {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant';
-};
-
-// Message component
-function Message({ content, role }: { content: string; role: Message['role'] }) {
-  const isUser = role === 'user';
+export default function LandingPage() {
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-      <div
-        className={`max-w-[80%] rounded-lg px-4 py-2 ${
-          isUser
-            ? 'bg-blue-500 text-white rounded-br-none'
-            : 'bg-white shadow rounded-bl-none'
-        }`}
-      >
-        {content}
-      </div>
-    </div>
-  );
-}
-
-export default function ChatDemoPage() {
-  // State for messages and input
-  const [messages, setMessages] = React.useState<Message[]>([
-    { id: '1', content: 'Hello! How can I help you today?', role: 'assistant' },
-  ]);
-  const [inputValue, setInputValue] = React.useState('');
-  const [mode, setMode] = React.useState<'chat' | 'image'>('chat');
-
-  // Handle sending a message
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
-
-    // Add user message
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      content: inputValue,
-      role: 'user',
-    };
-    setMessages(prev => [...prev, newMessage]);
-
-    // Add mock assistant response
-    setTimeout(() => {
-      const response: Message = {
-        id: (Date.now() + 1).toString(),
-        content: 'This is a mock response. Backend integration will be added later.',
-        role: 'assistant',
-      };
-      setMessages(prev => [...prev, response]);
-    }, 1000);
-
-    // Clear input
-    setInputValue('');
-  };
-
-  // Handle input submission
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-  return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Message list container with fixed height and scrolling */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto space-y-4">
-          {/* Render messages */}
-          {messages.map((message) => (
-            <Message
-              key={message.id}
-              content={message.content}
-              role={message.role}
-            />
-          ))}
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center gap-2">
+              <MessageCircle className="w-8 h-8 text-blue-600" />
+              <span className="text-xl font-semibold text-gray-900">ChatAI</span>
+            </div>
+            <Link 
+              href="/chat"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              Start Chatting
+            </Link>
+          </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Fixed input section at bottom */}
-      <div className="border-t bg-white">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="relative flex items-center rounded-xl border border-gray-200 bg-white shadow-sm">
-            {/* Attachment button */}
-            <button className="p-2 hover:text-blue-500 text-gray-500">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
-              </svg>
+      {/* Hero Section */}
+      <section className="pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+            AI-Powered Chat &amp; 
+            <span className="text-blue-600"> Image Generation</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+            Experience the power of OpenAI's latest models. Chat with GPT-4, generate stunning images, 
+            and enjoy real-time streaming responses in one seamless interface.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-lg sm:max-w-none mx-auto">
+            <Link 
+              href="/chat"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold text-base sm:text-lg transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
+            >
+              Start Chatting <ArrowRight className="w-5 h-5" />
+            </Link>
+            <button className="border border-gray-300 hover:border-gray-400 text-gray-700 px-6 sm:px-8 py-3 rounded-lg font-semibold text-base sm:text-lg transition-colors w-full sm:w-auto">
+              Learn More
             </button>
+          </div>
+        </div>
+      </section>
 
-            {/* Input field */}
-            <input
-              type="text"
-              placeholder="Type a message..."
-              className="flex-1 px-4 py-3 bg-transparent focus:outline-none text-gray-700"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-
-            {/* Action buttons */}
-            <div className="flex items-center gap-2 px-2">
-              {/* Create image button */}
-              <button 
-                className={`p-2 flex items-center gap-2 ${
-                  mode === 'image' ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'
-                }`}
-                onClick={() => setMode('image')}
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <path d="M21 15l-5-5L5 21" />
-                </svg>
-                <span className="text-sm">Create image</span>
-              </button>
-
-              {/* Search web button */}
-              <button 
-                className={`p-2 flex items-center gap-2 ${
-                  mode === 'chat' ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'
-                }`}
-                onClick={() => setMode('chat')}
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="M21 21l-4.35-4.35" />
-                </svg>
-                <span className="text-sm">Search web</span>
-              </button>
-
-              {/* Model selector */}
-              <div className="border-l pl-2 ml-2">
-                <button className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
-                  <span>OpenAI GPT-4o mini</span>
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </button>
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Powerful AI Features
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Everything you need to interact with AI, from natural conversations to creative image generation.
+            </p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
+            {/* Text Chat Feature */}
+            <div className="text-center p-4 sm:p-6">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" />
               </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                Smart Conversations
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                Chat naturally with GPT-4.1-nano. Get intelligent responses with real-time streaming 
+                for an engaging conversation experience.
+              </p>
+            </div>
+
+            {/* Image Generation Feature */}
+            <div className="text-center p-4 sm:p-6">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Image className="w-7 h-7 sm:w-8 sm:h-8 text-purple-600" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                Image Creation
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                Generate stunning visuals with OpenAI's image generation model. 
+                Simply describe what you want and watch it come to life.
+              </p>
+            </div>
+
+            {/* Real-time Streaming Feature */}
+            <div className="text-center p-4 sm:p-6 sm:col-span-2 md:col-span-1">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Zap className="w-7 h-7 sm:w-8 sm:h-8 text-green-600" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                Real-time Responses
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                Experience instant feedback with streaming text responses. 
+                See AI thoughts unfold in real-time as it processes your requests.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-blue-600">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Ready to Experience AI?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Start your first conversation or create your first image. No signup required.
+          </p>
+          <Link 
+            href="/chat"
+            className="bg-white hover:bg-gray-100 text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg transition-colors inline-flex items-center gap-2"
+          >
+            Get Started Now <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-4 md:mb-0">
+              <MessageCircle className="w-6 h-6 text-blue-400" />
+              <span className="text-lg font-semibold">ChatAI</span>
+            </div>
+            <p className="text-sm text-gray-400">
+              Powered by OpenAI • Built with Next.js &amp; Supabase
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
