@@ -1,0 +1,139 @@
+---
+globs: **/*.ts,**/*.tsx,**/tsconfig.json
+description: TypeScript type usage and organization rules, plus tsconfig project structure (root solution file with per-scope project references under src/components, src/utils, src/types, and test).
+---
+
+### TypeScript Types + Project Structure Rules
+
+These rules guide how we write and organize TypeScript in this repo. They apply to TypeScript sources and `tsconfig.json` files.
+
+### Official Type Usage Do's and Don'ts
+- **Prefer primitives**: use `number`, `string`, `boolean` — avoid boxed object types `Number`, `String`, `Boolean`.
+- **Avoid `any`**: only use when temporarily migrating from JavaScript.
+- **Use `unknown`** when a value can be anything but must be narrowed before use.
+- **Prefer union types** over overloads when practical for simpler and safer APIs.
+
+### React + TypeScript: Component Props
+- **Co-locate simple props** with the component when the number of local types is small.
+- Example:
+
+```tsx
+// Button.tsx
+interface ButtonProps {
+  variant: 'primary' | 'secondary';
+  size: 'sm' | 'md' | 'lg';
+  onClick: () => void;
+}
+
+const Button: React.FC<ButtonProps> = ({ variant, size, onClick }) => {
+  // ...
+  return null;
+};
+```
+
+### Type Organization Strategy
+- **Start with co-location** (recommended):
+  - Keep component-specific or feature-local types next to their usage.
+  - For a feature, add a `types.ts` in that feature folder.
+- **Centralize when shared**:
+  - When a type is used in 2+ places across features, move it under `src/types/`.
+  - Maintain a small set of files there, e.g. `api.ts`, `models.ts`, `common.ts`, and re-export from `src/types/index.ts`.
+- **Hybrid thresholds**:
+  - **Component-level**: keep in the component file if there are fewer than 5 types.
+  - **Feature-level**: create `types.ts` within the feature folder for roughly 5–15 related types.
+  - **Global-level**: if used across multiple features or projects, move under `src/types/` and import from there.
+
+### Naming Conventions
+- **File names**:
+  - `Button.types.ts` — component-level types
+  - `user.types.ts` — domain types
+  - `api.types.ts` — API types
+  - Alternatives for centralization are acceptable: `types/User.ts`, `types/api/auth.ts`
+- **Symbols**:
+  - Use clear, descriptive names. Avoid abbreviations. Prefer full words over acronyms.
+
+### Centralized Types Layout
+- Directory recommendations:
+
+```text
+src/
+  types/
+    index.ts        // re-exports
+    api.ts          // API response/request shapes
+    models.ts       // domain entities and value objects
+    common.ts       // utility and cross-cutting types
+```
+
+- Keep `index.ts` as the single import surface for shared types:
+
+```ts
+// src/types/index.ts
+export * from './api';
+export * from './models';
+export * from './common';
+```
+
+### Project Structure and tsconfig Setup
+- Expected layout (solution-style build):
+
+```text
+my-project/
+  src/
+    components/
+      tsconfig.json
+    utils/
+      tsconfig.json
+    types/
+      tsconfig.json
+  test/
+    tsconfig.json
+  tsconfig.json      // solution/root
+```
+
+- Referenced files in this repo:
+  - Root solution: [tsconfig.json](mdc:tsconfig.json)
+  - Components: [src/components/tsconfig.json](mdc:src/components/tsconfig.json)
+  - Utils: [src/utils/tsconfig.json](mdc:src/utils/tsconfig.json)
+  - Types: [src/types/tsconfig.json](mdc:src/types/tsconfig.json)
+  - Tests: [test/tsconfig.json](mdc:test/tsconfig.json)
+
+- Root `tsconfig.json` should act as the solution file with project references:
+
+```json
+{
+  "files": [],
+  "references": [
+    { "path": "./src/components" },
+    { "path": "./src/utils" },
+    { "path": "./src/types" },
+    { "path": "./test" }
+  ]
+}
+```
+
+- Each child `tsconfig.json` should be a project (composite) and extend root options as needed:
+
+```json
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "node_modules"]
+}
+```
+
+Notes:
+- Use `noEmit` for app packages that do not output build artifacts; enable emit in libraries as needed.
+- Keep references acyclic. If a type is shared across subprojects, place it in `src/types/` and depend on that project.
+
+### Practical Checklist
+- **Before adding a type**: is it local, feature-level, or shared? Place accordingly.
+- **Before exporting from a component**: avoid exporting component-internal types unless needed elsewhere.
+- **When a type is reused in 2+ places**: promote it to `src/types/` and re-export via `src/types/index.ts`.
+- **Avoid** boxed object types and casual `any`. Prefer `unknown` with explicit narrowing.
+

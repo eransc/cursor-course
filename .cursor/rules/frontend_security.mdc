@@ -1,0 +1,107 @@
+---
+description: Frontend security best practices and checklist management
+globs: src/**/*.{ts,tsx,js,jsx}, public/*, logs/frontend_security_checklist.txt
+alwaysApply: true
+---
+
+# Frontend Security Best Practices
+
+This rule enforces frontend security best practices and maintains a security checklist.
+
+## Checklist Management
+
+- The security checklist is maintained at `logs/frontend_security_checklist.txt`
+- Review and update the checklist monthly
+- Document all security decisions and exceptions
+- Track completion dates for each item
+
+## Key Security Areas
+
+### 1. HTTPS & Network Security
+```typescript
+// ✅ DO: Use HTTPS for all API calls
+const api = axios.create({
+  baseURL: 'https://api.example.com'
+});
+
+// ❌ DON'T: Use insecure HTTP
+const api = axios.create({
+  baseURL: 'http://api.example.com'
+});
+```
+
+### 2. Input Validation
+```typescript
+// ✅ DO: Validate and sanitize inputs
+const sanitizedInput = DOMPurify.sanitize(userInput);
+
+// ❌ DON'T: Trust user input directly
+dangerouslySetInnerHTML={{ __html: userInput }}
+```
+
+### 3. Data Storage
+```typescript
+// ✅ DO: Store non-sensitive data only
+localStorage.setItem('theme', 'dark');
+
+// ❌ DON'T: Store sensitive data
+localStorage.setItem('apiKey', 'secret-key');
+```
+
+### 4. API Security
+```typescript
+// ✅ DO: Use environment variables
+const apiKey = process.env.NEXT_PUBLIC_SAFE_KEY;
+
+// ❌ DON'T: Hardcode secrets
+const apiKey = 'my-secret-key';
+```
+
+### 5. Error Handling
+```typescript
+// ✅ DO: Use generic error messages
+throw new Error('Authentication failed');
+
+// ❌ DON'T: Expose internal details
+throw new Error(`DB query failed: ${sqlError}`);
+```
+
+## Implementation Requirements
+
+1. **HTTPS Everywhere**
+   - All API endpoints must use HTTPS
+   - Redirect HTTP to HTTPS
+   - Enable HSTS
+
+2. **Input Validation**
+   - Validate all user inputs
+   - Sanitize HTML content
+   - Escape special characters
+
+3. **Data Storage**
+   - No sensitive data in localStorage/sessionStorage
+   - No API keys in frontend code
+   - Use secure session management
+
+4. **Error Handling**
+   - Generic error messages in production
+   - No sensitive data in logs
+   - Proper error boundaries
+
+5. **Security Headers**
+   - Configure recommended security headers
+   - Use proper CSP directives
+   - Enable CORS appropriately
+
+## Checklist Maintenance
+
+1. Monthly review of `frontend_security_checklist.txt`
+2. Document all exceptions
+3. Track completion dates
+4. Update for new requirements
+
+## References
+
+- [OWASP Frontend Security Guide](https://owasp.org/www-project-top-ten/)
+- [Web Security Best Practices](docs/tech/Security_BestPractices.md)
+- [Next.js Security Documentation](https://nextjs.org/docs/authentication)

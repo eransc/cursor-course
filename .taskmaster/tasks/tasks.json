@@ -1,0 +1,207 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 32,
+        "title": "Project Setup with NextJS, TailwindCSS, and ShadUI",
+        "description": "Initialize the project structure using NextJS App Directory, configure TailwindCSS for styling, and integrate ShadUI for reusable components.",
+        "details": "1. Create a new NextJS project using the App Directory structure:\n```bash\nnpx create-next-app@latest chatbot-app --typescript --eslint --app\n```\n2. Install and configure TailwindCSS:\n```bash\nnpm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\n```\n3. Configure tailwind.config.js to include app paths\n4. Install and set up ShadUI components:\n```bash\nnpm install @shadcn/ui\nnpx shadcn-ui init\n```\n5. Create basic folder structure following NextJS App Directory conventions:\n   - app/\n     - layout.tsx\n     - page.tsx\n     - components/\n     - lib/\n     - api/\n6. Set up environment variables (.env.local) for API keys and endpoints",
+        "testStrategy": "1. Verify project builds without errors using 'npm run build'\n2. Confirm NextJS dev server starts correctly with 'npm run dev'\n3. Validate TailwindCSS is working by applying and testing basic styles\n4. Test ShadUI component rendering by implementing a simple button or card component\n5. Ensure environment variables are properly loaded using a test component",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize NextJS Project with TypeScript",
+            "description": "Create a new NextJS project using the App Directory structure with TypeScript and ESLint support.",
+            "dependencies": [],
+            "details": "Run the following command to create a new NextJS project:\n\nnpx create-next-app@latest chatbot-app --typescript --eslint --app\n\nAfter initialization, navigate to the project directory:\n\ncd chatbot-app\n\nVerify the project structure has been created correctly with the app directory and TypeScript configuration files.",
+            "status": "done",
+            "testStrategy": "Run 'npm run dev' to verify the development server starts correctly. Check that the default NextJS page loads in the browser without errors."
+          },
+          {
+            "id": 2,
+            "title": "Install and Configure TailwindCSS",
+            "description": "Set up TailwindCSS for styling the application, including proper configuration for the NextJS App Directory structure.",
+            "dependencies": [
+              "32.1"
+            ],
+            "details": "Install TailwindCSS and its dependencies:\n\nnpm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\n\nUpdate the tailwind.config.js file to include app paths:\n\n```javascript\n/** @type {import('tailwindcss').Config} */\nmodule.exports = {\n  content: [\n    './app/**/*.{js,ts,jsx,tsx}',\n    './pages/**/*.{js,ts,jsx,tsx}',\n    './components/**/*.{js,ts,jsx,tsx}'\n  ],\n  theme: {\n    extend: {},\n  },\n  plugins: [],\n}\n```\n\nAdd the Tailwind directives to your globals.css file in the app directory:\n\n```css\n@tailwind base;\n@tailwind components;\n@tailwind utilities;\n```",
+            "status": "done",
+            "testStrategy": "Create a simple component with Tailwind classes and verify the styles are applied correctly. Test responsive utility classes to ensure the configuration is working."
+          },
+          {
+            "id": 3,
+            "title": "Install and Set Up ShadUI Components",
+            "description": "Integrate ShadUI for reusable UI components and configure it to work with the project's TailwindCSS setup.",
+            "dependencies": [
+              "32.2"
+            ],
+            "details": "Install ShadUI:\n\nnpm install @shadcn/ui\n\nInitialize ShadUI with the CLI tool:\n\nnpx shadcn-ui init\n\nDuring initialization, select the following options:\n- TypeScript: Yes\n- Style: Default (or your preference)\n- Base color: Slate (or your preference)\n- Global CSS path: app/globals.css\n- CSS variables: Yes\n- React Server Components: Yes\n- Components directory: components/ui\n- Utility directory: lib/utils\n\nAfter initialization, install a basic component to test the setup:\n\nnpx shadcn-ui add button",
+            "status": "pending",
+            "testStrategy": "Import and render the Button component in app/page.tsx to verify ShadUI is working correctly. Test different variants of the button to ensure the styling system is properly configured."
+          },
+          {
+            "id": 4,
+            "title": "Create Project Folder Structure",
+            "description": "Set up the recommended folder structure following NextJS App Directory conventions for organized code management.",
+            "dependencies": [
+              "32.1"
+            ],
+            "details": "Create the following folder structure within the app directory:\n\n- app/\n  - layout.tsx (Update with proper metadata and global styles)\n  - page.tsx (Main entry point)\n  - components/ (For custom application components)\n    - ui/ (Already created by ShadUI)\n  - lib/ (For utility functions and shared code)\n    - utils.ts (Already created by ShadUI)\n  - api/ (For API routes)\n    - chat/\n      - route.ts (Will be implemented later)\n\nUpdate the app/layout.tsx file with proper metadata and structure:\n\n```typescript\nexport const metadata = {\n  title: 'Chat Application',\n  description: 'A modern chat application built with NextJS, TailwindCSS, and ShadUI',\n};\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang=\"en\">\n      <body className=\"min-h-screen bg-background\">{children}</body>\n    </html>\n  );\n}\n```",
+            "status": "pending",
+            "testStrategy": "Verify all directories are created correctly. Test the layout by adding components to different parts of the structure and ensuring they render properly."
+          },
+          {
+            "id": 5,
+            "title": "Configure Environment Variables",
+            "description": "Set up environment variables for API keys and endpoints, ensuring proper configuration for both development and production environments.",
+            "dependencies": [
+              "32.1"
+            ],
+            "details": "Create a .env.local file in the project root with placeholders for required environment variables:\n\n```\n# OpenAI API Configuration\nOPENAI_API_KEY=your_openai_api_key_here\n\n# Supabase Configuration (for future use)\nNEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here\nNEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here\n```\n\nCreate a .env.example file with the same structure but without actual values for version control.\n\nAdd .env.local to .gitignore to prevent committing sensitive information.\n\nCreate a configuration file at lib/config.ts to access environment variables:\n\n```typescript\nexport const config = {\n  openai: {\n    apiKey: process.env.OPENAI_API_KEY,\n  },\n  supabase: {\n    url: process.env.NEXT_PUBLIC_SUPABASE_URL,\n    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,\n  },\n};\n```",
+            "status": "done",
+            "testStrategy": "Create a simple API route that accesses an environment variable and returns a success message (without exposing the actual value). Test that environment variables are accessible in both client and server components as appropriate."
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Supabase Local Setup and Database Schema",
+        "description": "Set up a local Supabase instance and create the database schema for storing chat sessions and messages.",
+        "details": "1. Install Supabase CLI:\n```bash\nnpm install -g supabase\n```\n2. Initialize local Supabase project:\n```bash\nsupabase init\nsupabase start\n```\n3. Create database migrations for the required tables:\n```sql\n-- Create chat_sessions table\nCREATE TABLE chat_sessions (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n  title TEXT NOT NULL\n);\n\n-- Create chat_messages table\nCREATE TABLE chat_messages (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n  chat_id UUID REFERENCES chat_sessions(id) ON DELETE CASCADE,\n  role TEXT CHECK (role IN ('user', 'assistant')),\n  content TEXT NOT NULL,\n  type TEXT CHECK (type IN ('text', 'image')),\n  image_url TEXT\n);\n```\n4. Apply migrations to local Supabase instance:\n```bash\nsupabase migration up\n```\n5. Configure Supabase client in the application:\n```typescript\n// lib/supabase.ts\nimport { createClient } from '@supabase/supabase-js';\n\nconst supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;\nconst supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;\n\nexport const supabase = createClient(supabaseUrl, supabaseKey);\n```",
+        "testStrategy": "1. Verify Supabase local instance is running correctly\n2. Test database connection from the application\n3. Validate schema by inserting and querying test records\n4. Ensure foreign key constraints work as expected\n5. Verify type constraints are enforced correctly\n6. Test Supabase client initialization and connection in the application",
+        "priority": "high",
+        "dependencies": [
+          32
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 34,
+        "title": "Chat Interface UI Implementation",
+        "description": "Create the user interface components for the chat application, including message display area, input field, and basic layout.",
+        "details": "1. Create reusable UI components:\n```typescript\n// components/ChatMessage.tsx - Component for individual messages\n// components/ChatInput.tsx - Component for user input\n// components/ChatContainer.tsx - Container for the chat interface\n// components/Header.tsx - Application header with title and controls\n```\n2. Implement the main chat layout in app/page.tsx:\n```typescript\nimport ChatContainer from '@/components/ChatContainer';\nimport Header from '@/components/Header';\n\nexport default function Home() {\n  return (\n    <main className=\"flex flex-col h-screen\">\n      <Header />\n      <ChatContainer />\n    </main>\n  );\n}\n```\n3. Style components using TailwindCSS with clear visual distinction between user and AI messages\n4. Implement responsive design for mobile and desktop views\n5. Create placeholder states for empty chat and loading indicators",
+        "testStrategy": "1. Verify UI renders correctly across different screen sizes\n2. Test component composition and props passing\n3. Validate styling and visual distinction between message types\n4. Ensure input field behaves correctly (focus, submission)\n5. Test placeholder and empty states\n6. Verify accessibility standards (keyboard navigation, ARIA attributes)",
+        "priority": "high",
+        "dependencies": [
+          32
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 35,
+        "title": "OpenAI API Integration for Text Chat",
+        "description": "Implement the integration with OpenAI's GPT-4.1-nano model for text-based chat functionality.",
+        "details": "1. Install OpenAI SDK:\n```bash\nnpm install openai\n```\n2. Create API route for chat completion:\n```typescript\n// app/api/chat/route.ts\nimport { OpenAI } from 'openai';\nimport { NextRequest, NextResponse } from 'next/server';\n\nconst openai = new OpenAI({\n  apiKey: process.env.OPENAI_API_KEY\n});\n\nexport async function POST(req: NextRequest) {\n  const { messages } = await req.json();\n  \n  try {\n    const response = await openai.chat.completions.create({\n      model: 'gpt-4.1-nano-2025-04-14',\n      messages,\n      stream: false\n    });\n    \n    return NextResponse.json(response.choices[0].message);\n  } catch (error) {\n    return NextResponse.json({ error: 'Failed to generate response' }, { status: 500 });\n  }\n}\n```\n3. Create a hook for managing chat state and API calls:\n```typescript\n// hooks/useChat.ts\nimport { useState } from 'react';\n\nexport function useChat() {\n  const [messages, setMessages] = useState([]);\n  const [isLoading, setIsLoading] = useState(false);\n  \n  const sendMessage = async (content) => {\n    // Add user message to state\n    // Call API\n    // Add AI response to state\n  };\n  \n  return { messages, isLoading, sendMessage };\n}\n```\n4. Connect the chat UI components with the chat hook",
+        "testStrategy": "1. Test API route with various message inputs\n2. Verify correct model is being used (gpt-4.1-nano-2025-04-14)\n3. Test error handling for API failures\n4. Validate message state management in the hook\n5. Test end-to-end flow from user input to displayed response\n6. Verify API key security and environment variable loading",
+        "priority": "high",
+        "dependencies": [
+          32,
+          34
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 36,
+        "title": "Implement Text Streaming Functionality",
+        "description": "Add real-time streaming of AI responses as they're generated to enhance the user experience.",
+        "details": "1. Modify the API route to support streaming:\n```typescript\n// app/api/chat/stream/route.ts\nimport { OpenAI } from 'openai';\nimport { NextRequest } from 'next/server';\n\nconst openai = new OpenAI({\n  apiKey: process.env.OPENAI_API_KEY\n});\n\nexport async function POST(req: NextRequest) {\n  const { messages } = await req.json();\n  \n  const stream = await openai.chat.completions.create({\n    model: 'gpt-4.1-nano-2025-04-14',\n    messages,\n    stream: true\n  });\n  \n  const encoder = new TextEncoder();\n  const decoder = new TextDecoder();\n  \n  const readableStream = new ReadableStream({\n    async start(controller) {\n      for await (const chunk of stream) {\n        const content = chunk.choices[0]?.delta?.content || '';\n        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content })}\\n\\n`));\n      }\n      controller.enqueue(encoder.encode('data: [DONE]\\n\\n'));\n      controller.close();\n    }\n  });\n  \n  return new Response(readableStream, {\n    headers: {\n      'Content-Type': 'text/event-stream',\n      'Cache-Control': 'no-cache',\n      'Connection': 'keep-alive'\n    }\n  });\n}\n```\n2. Update the chat hook to handle streaming responses:\n```typescript\n// hooks/useChat.ts\nimport { useState } from 'react';\n\nexport function useChat() {\n  const [messages, setMessages] = useState([]);\n  const [isLoading, setIsLoading] = useState(false);\n  const [streamingMessage, setStreamingMessage] = useState('');\n  \n  const sendMessage = async (content) => {\n    // Add user message\n    setIsLoading(true);\n    setStreamingMessage('');\n    \n    const response = await fetch('/api/chat/stream', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ messages: [...messages, { role: 'user', content }] })\n    });\n    \n    if (!response.ok) {\n      setIsLoading(false);\n      return;\n    }\n    \n    const reader = response.body.getReader();\n    const decoder = new TextDecoder();\n    \n    while (true) {\n      const { done, value } = await reader.read();\n      if (done) break;\n      \n      const chunk = decoder.decode(value);\n      const lines = chunk.split('\\n\\n').filter(line => line.startsWith('data: '));\n      \n      for (const line of lines) {\n        const data = line.replace('data: ', '');\n        if (data === '[DONE]') continue;\n        \n        try {\n          const { content } = JSON.parse(data);\n          setStreamingMessage(prev => prev + content);\n        } catch (e) {\n          console.error('Error parsing stream data', e);\n        }\n      }\n    }\n    \n    // Add complete AI message to state\n    setMessages(prev => [...prev, { role: 'assistant', content: streamingMessage }]);\n    setStreamingMessage('');\n    setIsLoading(false);\n  };\n  \n  return { messages, isLoading, streamingMessage, sendMessage };\n}\n```\n3. Update the chat UI to display streaming text in real-time",
+        "testStrategy": "1. Test streaming API endpoint with various message lengths\n2. Verify chunks are properly decoded and displayed\n3. Test error handling during streaming\n4. Validate the UI updates in real-time as chunks arrive\n5. Test performance with long responses\n6. Verify stream properly closes when complete\n7. Test behavior when connection is interrupted",
+        "priority": "medium",
+        "dependencies": [
+          35
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 37,
+        "title": "Implement Image Generation Mode",
+        "description": "Add functionality to generate images using OpenAI's gpt-image-1 model and implement a toggle to switch between text and image modes.",
+        "details": "1. Create API route for image generation:\n```typescript\n// app/api/image/route.ts\nimport { OpenAI } from 'openai';\nimport { NextRequest, NextResponse } from 'next/server';\n\nconst openai = new OpenAI({\n  apiKey: process.env.OPENAI_API_KEY\n});\n\nexport async function POST(req: NextRequest) {\n  const { prompt } = await req.json();\n  \n  try {\n    const response = await openai.images.generate({\n      model: 'gpt-image-1',\n      prompt,\n      n: 1,\n      size: '1024x1024'\n    });\n    \n    return NextResponse.json({ url: response.data[0].url });\n  } catch (error) {\n    return NextResponse.json({ error: 'Failed to generate image' }, { status: 500 });\n  }\n}\n```\n2. Create a mode toggle component:\n```typescript\n// components/ModeToggle.tsx\nimport { useState } from 'react';\n\nexport default function ModeToggle({ mode, setMode }) {\n  return (\n    <div className=\"flex items-center space-x-2\">\n      <button\n        className={`px-3 py-1 rounded ${mode === 'text' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}\n        onClick={() => setMode('text')}\n      >\n        Text\n      </button>\n      <button\n        className={`px-3 py-1 rounded ${mode === 'image' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}\n        onClick={() => setMode('image')}\n      >\n        Image\n      </button>\n    </div>\n  );\n}\n```\n3. Update the chat hook to handle image generation:\n```typescript\n// hooks/useChat.ts\nexport function useChat() {\n  // ... existing code\n  const [mode, setMode] = useState('text');\n  \n  const sendMessage = async (content) => {\n    // Add user message\n    const userMessage = { role: 'user', content, type: mode };\n    setMessages(prev => [...prev, userMessage]);\n    setIsLoading(true);\n    \n    if (mode === 'text') {\n      // Existing text chat logic\n    } else if (mode === 'image') {\n      try {\n        const response = await fetch('/api/image', {\n          method: 'POST',\n          headers: { 'Content-Type': 'application/json' },\n          body: JSON.stringify({ prompt: content })\n        });\n        \n        const data = await response.json();\n        \n        if (response.ok) {\n          setMessages(prev => [...prev, {\n            role: 'assistant',\n            content: 'Image generated based on your prompt',\n            type: 'image',\n            image_url: data.url\n          }]);\n        } else {\n          // Handle error\n        }\n      } catch (error) {\n        // Handle error\n      } finally {\n        setIsLoading(false);\n      }\n    }\n  };\n  \n  return { messages, isLoading, streamingMessage, mode, setMode, sendMessage };\n}\n```\n4. Update the ChatMessage component to display images:\n```typescript\n// components/ChatMessage.tsx\nexport default function ChatMessage({ message }) {\n  return (\n    <div className={`message ${message.role === 'user' ? 'user' : 'assistant'}`}>\n      {message.type === 'image' && message.image_url ? (\n        <div>\n          <p>{message.content}</p>\n          <img src={message.image_url} alt=\"Generated image\" className=\"mt-2 rounded-lg max-w-full\" />\n        </div>\n      ) : (\n        <p>{message.content}</p>\n      )}\n    </div>\n  );\n}\n```\n5. Add visual indicators in the UI to show the current active mode",
+        "testStrategy": "1. Test image generation API with various prompts\n2. Verify correct model (gpt-image-1) is being used\n3. Test mode toggle functionality\n4. Validate image display in the chat interface\n5. Test error handling for failed image generation\n6. Verify proper storage of image URLs in the message history\n7. Test UI indicators for active mode",
+        "priority": "medium",
+        "dependencies": [
+          35,
+          34
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 38,
+        "title": "Implement Message Storage in Supabase",
+        "description": "Store chat messages and sessions in Supabase to persist conversations and enable the new chat functionality.",
+        "details": "1. Create a service for Supabase interactions:\n```typescript\n// lib/supabaseService.ts\nimport { supabase } from './supabase';\n\nexport async function createChatSession(title: string) {\n  const { data, error } = await supabase\n    .from('chat_sessions')\n    .insert({ title })\n    .select()\n    .single();\n    \n  if (error) throw error;\n  return data;\n}\n\nexport async function saveChatMessage(message: {\n  chat_id: string;\n  role: 'user' | 'assistant';\n  content: string;\n  type: 'text' | 'image';\n  image_url?: string;\n}) {\n  const { data, error } = await supabase\n    .from('chat_messages')\n    .insert(message)\n    .select()\n    .single();\n    \n  if (error) throw error;\n  return data;\n}\n\nexport async function getChatSession(id: string) {\n  const { data: session, error: sessionError } = await supabase\n    .from('chat_sessions')\n    .select('*')\n    .eq('id', id)\n    .single();\n    \n  if (sessionError) throw sessionError;\n  \n  const { data: messages, error: messagesError } = await supabase\n    .from('chat_messages')\n    .select('*')\n    .eq('chat_id', id)\n    .order('created_at', { ascending: true });\n    \n  if (messagesError) throw messagesError;\n  \n  return { session, messages };\n}\n```\n2. Update the chat hook to use Supabase for storage:\n```typescript\n// hooks/useChat.ts\nimport { useState, useEffect } from 'react';\nimport { createChatSession, saveChatMessage, getChatSession } from '@/lib/supabaseService';\n\nexport function useChat(chatId = null) {\n  const [messages, setMessages] = useState([]);\n  const [session, setSession] = useState(null);\n  const [isLoading, setIsLoading] = useState(false);\n  // ... other state\n  \n  useEffect(() => {\n    if (chatId) {\n      // Load existing chat\n      const loadChat = async () => {\n        try {\n          const { session, messages } = await getChatSession(chatId);\n          setSession(session);\n          setMessages(messages);\n        } catch (error) {\n          console.error('Failed to load chat', error);\n        }\n      };\n      \n      loadChat();\n    } else if (!session) {\n      // Create new session for new chat\n      const createSession = async () => {\n        try {\n          const newSession = await createChatSession('New Chat');\n          setSession(newSession);\n        } catch (error) {\n          console.error('Failed to create chat session', error);\n        }\n      };\n      \n      createSession();\n    }\n  }, [chatId]);\n  \n  const sendMessage = async (content) => {\n    // ... existing code for sending messages\n    \n    // Save user message to Supabase\n    if (session) {\n      await saveChatMessage({\n        chat_id: session.id,\n        role: 'user',\n        content,\n        type: mode\n      });\n      \n      // After receiving AI response, save it too\n      // For text mode\n      await saveChatMessage({\n        chat_id: session.id,\n        role: 'assistant',\n        content: aiResponseContent,\n        type: 'text'\n      });\n      \n      // For image mode\n      await saveChatMessage({\n        chat_id: session.id,\n        role: 'assistant',\n        content: 'Image generated based on your prompt',\n        type: 'image',\n        image_url: imageUrl\n      });\n    }\n  };\n  \n  return { \n    messages, \n    isLoading, \n    streamingMessage, \n    mode, \n    setMode, \n    sendMessage,\n    session\n  };\n}\n```",
+        "testStrategy": "1. Test creating new chat sessions in Supabase\n2. Verify message storage for both text and image types\n3. Test retrieving complete chat history\n4. Validate error handling for database operations\n5. Test concurrent operations and race conditions\n6. Verify data integrity between application state and database\n7. Test performance with large chat histories",
+        "priority": "medium",
+        "dependencies": [
+          33,
+          35,
+          37
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 39,
+        "title": "Implement New Chat Functionality",
+        "description": "Add the ability for users to start a new chat while preserving previous conversations.",
+        "details": "1. Create a NewChatButton component:\n```typescript\n// components/NewChatButton.tsx\nimport { useRouter } from 'next/navigation';\n\nexport default function NewChatButton() {\n  const router = useRouter();\n  \n  const handleNewChat = () => {\n    router.push('/');\n  };\n  \n  return (\n    <button\n      onClick={handleNewChat}\n      className=\"flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100\"\n    >\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" strokeWidth=\"2\" strokeLinecap=\"round\" strokeLinejoin=\"round\">\n        <path d=\"M12 5v14M5 12h14\" />\n      </svg>\n      New Chat\n    </button>\n  );\n}\n```\n2. Create a chat list component to show previous chats:\n```typescript\n// components/ChatList.tsx\nimport { useEffect, useState } from 'react';\nimport { supabase } from '@/lib/supabase';\nimport Link from 'next/link';\n\nexport default function ChatList() {\n  const [chats, setChats] = useState([]);\n  \n  useEffect(() => {\n    const fetchChats = async () => {\n      const { data, error } = await supabase\n        .from('chat_sessions')\n        .select('*')\n        .order('updated_at', { ascending: false });\n        \n      if (!error && data) {\n        setChats(data);\n      }\n    };\n    \n    fetchChats();\n    \n    // Subscribe to changes\n    const subscription = supabase\n      .channel('chat_sessions')\n      .on('postgres_changes', { event: '*', schema: 'public', table: 'chat_sessions' }, fetchChats)\n      .subscribe();\n      \n    return () => {\n      subscription.unsubscribe();\n    };\n  }, []);\n  \n  return (\n    <div className=\"space-y-2\">\n      <NewChatButton />\n      <div className=\"mt-4 space-y-1\">\n        {chats.map(chat => (\n          <Link\n            key={chat.id}\n            href={`/chat/${chat.id}`}\n            className=\"block p-2 rounded-md hover:bg-gray-100 truncate\"\n          >\n            {chat.title}\n          </Link>\n        ))}\n      </div>\n    </div>\n  );\n}\n```\n3. Update the main layout to include the chat list:\n```typescript\n// app/layout.tsx\nimport ChatList from '@/components/ChatList';\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <div className=\"flex h-screen\">\n          <div className=\"w-64 p-4 border-r\">\n            <ChatList />\n          </div>\n          <div className=\"flex-1\">\n            {children}\n          </div>\n        </div>\n      </body>\n    </html>\n  );\n}\n```\n4. Create dynamic routes for chat sessions:\n```typescript\n// app/chat/[id]/page.tsx\n'use client';\n\nimport { useParams } from 'next/navigation';\nimport ChatContainer from '@/components/ChatContainer';\nimport Header from '@/components/Header';\n\nexport default function ChatPage() {\n  const { id } = useParams();\n  \n  return (\n    <main className=\"flex flex-col h-screen\">\n      <Header />\n      <ChatContainer chatId={id} />\n    </main>\n  );\n}\n```\n5. Update the ChatContainer to accept a chatId prop and pass it to the useChat hook",
+        "testStrategy": "1. Test creating a new chat from the UI\n2. Verify chat list updates when new chats are created\n3. Test navigation between existing chats\n4. Validate chat history loads correctly when selecting a chat\n5. Test URL routing for chat sessions\n6. Verify real-time updates to the chat list\n7. Test behavior when a chat session is deleted or becomes invalid",
+        "priority": "medium",
+        "dependencies": [
+          38
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 40,
+        "title": "Error Handling and Loading States",
+        "description": "Implement comprehensive error handling and loading states throughout the application to improve user experience.",
+        "details": "1. Create reusable error and loading components:\n```typescript\n// components/ErrorMessage.tsx\nexport default function ErrorMessage({ message }) {\n  return (\n    <div className=\"p-4 bg-red-50 border border-red-200 rounded-md text-red-600\">\n      <p className=\"font-medium\">Error</p>\n      <p>{message}</p>\n    </div>\n  );\n}\n\n// components/LoadingSpinner.tsx\nexport default function LoadingSpinner() {\n  return (\n    <div className=\"flex justify-center items-center\">\n      <div className=\"animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900\"></div>\n    </div>\n  );\n}\n```\n2. Add error handling to API routes:\n```typescript\n// app/api/chat/route.ts\nexport async function POST(req: NextRequest) {\n  try {\n    const { messages } = await req.json();\n    \n    if (!messages || !Array.isArray(messages)) {\n      return NextResponse.json(\n        { error: 'Invalid request format' },\n        { status: 400 }\n      );\n    }\n    \n    // Existing code...\n  } catch (error) {\n    console.error('Chat API error:', error);\n    return NextResponse.json(\n      { error: 'Internal server error' },\n      { status: 500 }\n    );\n  }\n}\n```\n3. Update the chat hook with error handling:\n```typescript\n// hooks/useChat.ts\nexport function useChat(chatId = null) {\n  // ... existing state\n  const [error, setError] = useState(null);\n  \n  // Reset error when starting new operations\n  const resetError = () => setError(null);\n  \n  const sendMessage = async (content) => {\n    resetError();\n    setIsLoading(true);\n    \n    try {\n      // Existing code...\n    } catch (err) {\n      setError(err.message || 'Failed to send message');\n      console.error('Chat error:', err);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n  \n  // Add error handling to useEffect hooks\n  \n  return { \n    // ... existing return values\n    error,\n    resetError\n  };\n}\n```\n4. Add loading states to UI components:\n```typescript\n// components/ChatInput.tsx\nexport default function ChatInput({ onSendMessage, isLoading, mode }) {\n  // ... existing code\n  \n  return (\n    <div className=\"relative\">\n      <textarea\n        disabled={isLoading}\n        // ... other props\n      />\n      <button\n        disabled={isLoading || !input.trim()}\n        // ... other props\n      >\n        {isLoading ? <LoadingSpinner /> : 'Send'}\n      </button>\n    </div>\n  );\n}\n\n// components/ChatContainer.tsx\nexport default function ChatContainer({ chatId }) {\n  const { messages, isLoading, error, streamingMessage, sendMessage } = useChat(chatId);\n  \n  return (\n    <div className=\"flex-1 overflow-hidden flex flex-col\">\n      <div className=\"flex-1 overflow-y-auto p-4\">\n        {messages.map((message) => (\n          <ChatMessage key={message.id} message={message} />\n        ))}\n        \n        {streamingMessage && (\n          <ChatMessage message={{ role: 'assistant', content: streamingMessage }} />\n        )}\n        \n        {isLoading && !streamingMessage && <LoadingSpinner />}\n        \n        {error && <ErrorMessage message={error} />}\n      </div>\n      \n      <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />\n    </div>\n  );\n}\n```\n5. Add error boundaries for component-level error handling:\n```typescript\n// components/ErrorBoundary.tsx\n'use client';\n\nimport { Component } from 'react';\n\nexport default class ErrorBoundary extends Component {\n  constructor(props) {\n    super(props);\n    this.state = { hasError: false, error: null };\n  }\n\n  static getDerivedStateFromError(error) {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error, errorInfo) {\n    console.error('Component error:', error, errorInfo);\n  }\n\n  render() {\n    if (this.state.hasError) {\n      return (\n        <div className=\"p-4 bg-red-50 border border-red-200 rounded-md text-red-600\">\n          <h2 className=\"text-lg font-bold\">Something went wrong</h2>\n          <p>{this.state.error?.message || 'Unknown error'}</p>\n          <button\n            className=\"mt-2 px-4 py-2 bg-red-600 text-white rounded-md\"\n            onClick={() => this.setState({ hasError: false, error: null })}\n          >\n            Try again\n          </button>\n        </div>\n      );\n    }\n\n    return this.props.children;\n  }\n}\n```",
+        "testStrategy": "1. Test error handling for API failures\n2. Verify loading indicators appear at appropriate times\n3. Test error boundary recovery\n4. Validate form validation error handling\n5. Test network error scenarios\n6. Verify error messages are clear and actionable\n7. Test recovery paths after errors\n8. Validate disabled states during loading\n9. Test error logging functionality",
+        "priority": "medium",
+        "dependencies": [
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 41,
+        "title": "UI Polish and Cross-Browser Testing",
+        "description": "Refine the user interface with improved styling, responsiveness, and ensure cross-browser compatibility.",
+        "details": "1. Enhance the visual design:\n   - Add consistent spacing and alignment\n   - Improve typography with proper hierarchy\n   - Add subtle animations for transitions\n   - Ensure proper contrast for accessibility\n\n2. Implement responsive improvements:\n```css\n/* Add to globals.css */\n@media (max-width: 640px) {\n  .chat-layout {\n    flex-direction: column;\n  }\n  \n  .chat-sidebar {\n    width: 100%;\n    height: auto;\n    border-right: none;\n    border-bottom: 1px solid #e5e7eb;\n  }\n  \n  .chat-main {\n    height: calc(100vh - 120px);\n  }\n}\n```\n\n3. Add focus states and keyboard navigation:\n```typescript\n// components/ChatInput.tsx\nexport default function ChatInput({ onSendMessage, isLoading }) {\n  // ... existing code\n  \n  const handleKeyDown = (e) => {\n    if (e.key === 'Enter' && !e.shiftKey) {\n      e.preventDefault();\n      handleSendMessage();\n    }\n  };\n  \n  return (\n    <div className=\"relative\">\n      <textarea\n        onKeyDown={handleKeyDown}\n        className=\"w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none\"\n        // ... other props\n      />\n      {/* ... */}\n    </div>\n  );\n}\n```\n\n4. Add hover and active states to interactive elements:\n```css\n/* Add to button styles */\n.btn {\n  @apply px-4 py-2 rounded-md transition-colors duration-200;\n}\n\n.btn-primary {\n  @apply bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700;\n}\n\n.btn-secondary {\n  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 active:bg-gray-400;\n}\n```\n\n5. Improve message display:\n```typescript\n// components/ChatMessage.tsx\nexport default function ChatMessage({ message }) {\n  return (\n    <div className={`p-4 rounded-lg mb-4 ${message.role === 'user' ? 'bg-blue-50 ml-12' : 'bg-gray-50 mr-12'}`}>\n      <div className=\"flex items-start\">\n        <div className=\"flex-shrink-0 mr-3\">\n          {message.role === 'user' ? (\n            <div className=\"w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white\">U</div>\n          ) : (\n            <div className=\"w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white\">AI</div>\n          )}\n        </div>\n        <div className=\"flex-1\">\n          {message.type === 'image' && message.image_url ? (\n            <div>\n              <p className=\"text-gray-700\">{message.content}</p>\n              <img src={message.image_url} alt=\"Generated image\" className=\"mt-2 rounded-lg max-w-full h-auto\" />\n            </div>\n          ) : (\n            <p className=\"text-gray-700 whitespace-pre-wrap\">{message.content}</p>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n}\n```\n\n6. Cross-browser testing checklist:\n   - Test in Chrome, Firefox, Safari, and Edge\n   - Verify layout consistency across browsers\n   - Test on iOS and Android mobile browsers\n   - Validate form submission in all browsers\n   - Check streaming functionality across browsers\n   - Verify image rendering in all browsers\n   - Test keyboard navigation across browsers",
+        "testStrategy": "1. Create a testing matrix for browser/device combinations\n2. Verify UI rendering in Chrome, Firefox, Safari, and Edge\n3. Test responsive design at various breakpoints (mobile, tablet, desktop)\n4. Validate keyboard accessibility and tab navigation\n5. Test with screen readers for accessibility\n6. Verify hover and focus states work correctly\n7. Test animations and transitions for smoothness\n8. Validate color contrast meets WCAG standards\n9. Test touch interactions on mobile devices\n10. Verify font rendering across platforms",
+        "priority": "low",
+        "dependencies": [
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-08-13T01:34:42.157Z",
+      "updated": "2025-08-13T03:42:25.274Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

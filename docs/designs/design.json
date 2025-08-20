@@ -1,0 +1,254 @@
+{
+  "theme": {
+    "name": "Modern Crypto Dashboard",
+    "version": "1.0.0",
+    "description": "A sophisticated dark theme design system for crypto and financial dashboards",
+    
+    "colors": {
+      "background": {
+        "primary": "#0B0F19",
+        "secondary": "#151B28",
+        "tertiary": "#1E2635",
+        "card": "#1A1F2E",
+        "hover": "#252B3B"
+      },
+      "text": {
+        "primary": "#FFFFFF",
+        "secondary": "#94A3B8",
+        "muted": "#64748B",
+        "success": "#10B981",
+        "danger": "#EF4444"
+      },
+      "brand": {
+        "primary": "#3B82F6",
+        "secondary": "#6366F1"
+      },
+      "accent": {
+        "blue": {
+          "base": "#3B82F6",
+          "light": "#60A5FA",
+          "dark": "#2563EB"
+        },
+        "green": {
+          "base": "#10B981",
+          "light": "#34D399",
+          "dark": "#059669"
+        }
+      },
+      "chart": {
+        "grid": "rgba(148, 163, 184, 0.1)",
+        "line": "#3B82F6",
+        "area": "rgba(59, 130, 246, 0.1)",
+        "positive": "#10B981",
+        "negative": "#EF4444"
+      },
+      "border": {
+        "default": "rgba(148, 163, 184, 0.1)",
+        "hover": "rgba(148, 163, 184, 0.2)",
+        "focus": "#3B82F6"
+      },
+      "gradient": {
+        "primary": "linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)",
+        "card": "linear-gradient(180deg, rgba(26, 31, 46, 0.5) 0%, rgba(26, 31, 46, 0.8) 100%)"
+      }
+    },
+
+    "typography": {
+      "fontFamilies": {
+        "primary": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "mono": "SF Mono, Monaco, Consolas, monospace",
+        "numeric": "'IBM Plex Mono', monospace"
+      },
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "sizes": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "lg": "1.125rem",
+        "xl": "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem"
+      },
+      "lineHeights": {
+        "none": 1,
+        "tight": 1.25,
+        "normal": 1.5,
+        "relaxed": 1.75
+      },
+      "letterSpacing": {
+        "tight": "-0.025em",
+        "normal": "0em",
+        "wide": "0.025em"
+      }
+    },
+
+    "spacing": {
+      "2xs": "0.25rem",
+      "xs": "0.5rem",
+      "sm": "0.75rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem",
+      "2xl": "2.5rem",
+      "3xl": "3rem"
+    },
+
+    "borderRadius": {
+      "sm": "0.375rem",
+      "md": "0.5rem",
+      "lg": "0.75rem",
+      "xl": "1rem",
+      "full": "9999px"
+    },
+
+    "shadows": {
+      "sm": "0 2px 4px rgba(0, 0, 0, 0.1)",
+      "md": "0 4px 6px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px rgba(0, 0, 0, 0.1)",
+      "glow": "0 0 20px rgba(59, 130, 246, 0.15)"
+    },
+
+    "components": {
+      "card": {
+        "background": "#1A1F2E",
+        "backgroundGradient": "linear-gradient(180deg, rgba(26, 31, 46, 0.5) 0%, rgba(26, 31, 46, 0.8) 100%)",
+        "borderRadius": "1rem",
+        "padding": "1.5rem",
+        "border": "1px solid rgba(148, 163, 184, 0.1)",
+        "shadow": "0 4px 6px rgba(0, 0, 0, 0.1)"
+      },
+      "button": {
+        "primary": {
+          "background": "linear-gradient(135deg, #3B82F6 0%, #6366F1 100%)",
+          "hoverBackground": "linear-gradient(135deg, #2563EB 0%, #4F46E5 100%)",
+          "textColor": "#FFFFFF",
+          "padding": "0.75rem 1.5rem",
+          "borderRadius": "0.5rem",
+          "fontSize": "0.875rem",
+          "fontWeight": 600
+        },
+        "secondary": {
+          "background": "#1E2635",
+          "hoverBackground": "#252B3B",
+          "textColor": "#FFFFFF",
+          "padding": "0.75rem 1.5rem",
+          "borderRadius": "0.5rem",
+          "fontSize": "0.875rem",
+          "fontWeight": 500
+        }
+      },
+      "input": {
+        "background": "#151B28",
+        "borderColor": "rgba(148, 163, 184, 0.1)",
+        "focusBorderColor": "#3B82F6",
+        "textColor": "#FFFFFF",
+        "placeholderColor": "#64748B",
+        "padding": "0.75rem 1rem",
+        "borderRadius": "0.5rem",
+        "fontSize": "0.875rem"
+      },
+      "chart": {
+        "background": "transparent",
+        "gridColor": "rgba(148, 163, 184, 0.1)",
+        "lineColor": "#3B82F6",
+        "areaGradient": {
+          "from": "rgba(59, 130, 246, 0.2)",
+          "to": "rgba(59, 130, 246, 0)"
+        },
+        "tooltipBackground": "#1A1F2E",
+        "tooltipBorder": "rgba(148, 163, 184, 0.1)",
+        "fontSize": "0.75rem",
+        "fontFamily": "'IBM Plex Mono', monospace"
+      },
+      "gauge": {
+        "background": "#151B28",
+        "trackColor": "rgba(148, 163, 184, 0.1)",
+        "progressGradient": "linear-gradient(90deg, #10B981 0%, #3B82F6 50%, #EF4444 100%)",
+        "labelColor": "#94A3B8",
+        "valueColor": "#FFFFFF",
+        "fontFamily": "'IBM Plex Mono', monospace"
+      },
+      "table": {
+        "headerBackground": "#151B28",
+        "rowBackground": "#1A1F2E",
+        "rowHoverBackground": "#252B3B",
+        "borderColor": "rgba(148, 163, 184, 0.1)",
+        "headerTextColor": "#94A3B8",
+        "cellTextColor": "#FFFFFF",
+        "fontSize": "0.875rem"
+      }
+    },
+
+    "effects": {
+      "transition": {
+        "default": "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+        "fast": "all 0.1s cubic-bezier(0.4, 0, 0.2, 1)",
+        "slow": "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+      },
+      "hover": {
+        "scale": "transform: scale(1.02)",
+        "glow": "box-shadow: 0 0 20px rgba(59, 130, 246, 0.15)",
+        "brightness": "brightness(1.1)"
+      }
+    },
+
+    "layout": {
+      "maxWidth": {
+        "container": "1440px",
+        "card": "400px",
+        "sidebar": "280px"
+      },
+      "grid": {
+        "gap": "1.5rem",
+        "columns": {
+          "sm": 1,
+          "md": 2,
+          "lg": 3,
+          "xl": 4
+        }
+      },
+      "sidebar": {
+        "width": "280px",
+        "padding": "1.5rem",
+        "background": "#151B28"
+      }
+    }
+  },
+
+  "implementation": {
+    "cssFramework": "tailwindcss",
+    "recommendations": {
+      "setup": [
+        "Use TailwindCSS with custom theme configuration",
+        "Implement dark mode as the default theme",
+        "Use CSS custom properties for dynamic values",
+        "Implement consistent spacing using the defined scale",
+        "Use CSS Grid for layout structure"
+      ],
+      "dataVisualization": [
+        "Use Chart.js or D3.js for charts with custom styling",
+        "Implement smooth animations for data updates",
+        "Use monospace fonts for numeric values",
+        "Ensure responsive behavior for all charts"
+      ],
+      "components": [
+        "Build reusable components for common patterns",
+        "Implement consistent hover and focus states",
+        "Use gradients for primary actions and accents",
+        "Follow the type scale strictly for hierarchy"
+      ],
+      "performance": [
+        "Implement code-splitting for large components",
+        "Use skeleton loading states for data fetching",
+        "Optimize chart rendering for real-time updates",
+        "Implement virtual scrolling for large datasets"
+      ]
+    }
+  }
+}
